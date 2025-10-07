@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, output, Output } from '@angular/core';
 import { DUMMY_USERS } from '../dummy-users';
 
 @Component({
@@ -11,14 +11,13 @@ export class User {
   @Input({required: true}) id!: string
   @Input({required: true}) name!: string
   @Input({required: true}) avatar!: string
-  @Output() select = new EventEmitter()
+  @Output() select = new EventEmitter<string>()
 
   get imageUrl() {
     return '/assets/users/' + this.avatar;
   } 
-    onSelectedUser() {
-      this.select.emit(this.id)
-    }
-
+  onSelectedUser(){
+    this.select.emit(this.id)
+  }
 }
  

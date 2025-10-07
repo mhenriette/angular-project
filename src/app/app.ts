@@ -3,18 +3,21 @@ import { RouterOutlet } from '@angular/router';
 import { Header } from './header/header';
 import { User } from "./user/user";
 import { DUMMY_USERS } from './dummy-users';
+import { Tasks } from './tasks/tasks';
 
 @Component({
   selector: 'app-root', 
-  imports: [RouterOutlet, Header, User],
+  imports: [RouterOutlet, Header, User, Tasks],
   templateUrl: './app.html', 
   styleUrl: './app.css'
 })
 export class App {
   protected readonly title = signal('angular-project');
   users = DUMMY_USERS
-  
-  onSelectUser(id: string){
-    console.log('the user selected is' + id)
+
+  selectdUser = '';
+
+  getSelectdUser(id: string){
+    this.selectdUser = this.users.find(user=> user.id === id)?.name!
   }
 }
