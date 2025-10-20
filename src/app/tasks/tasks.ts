@@ -1,15 +1,20 @@
 import { Component, Input } from '@angular/core';
 import { Task } from './task/task';
+import { NewTask } from './new-task/new-task';
+import { NewTaskData, type TaskType } from './new-task/new-task.model';
 
 @Component({
   selector: 'app-tasks',
-  imports: [Task],
+  imports: [Task, NewTask],
   templateUrl: './tasks.html',
   styleUrl: './tasks.css',
 })
 export class Tasks {
-  @Input({ required: true}) userId!: string;
+  @Input({ required: true }) userId!: string;
   @Input({ required: true }) name!: string;
+
+  isAddingNewtask: boolean = false;
+
   tasks = [
     {
       id: 't1',
@@ -34,14 +39,31 @@ export class Tasks {
     },
   ];
 
-  get selectedUserTasks (){
-    return this.tasks.filter( task=> task.userId === this.userId)
+  get selectedUserTasks() {
+    return this.tasks.filter((task) => task.userId === this.userId);
   }
 
-  recieveCompleteFromChild(id: string){
-
-    this.tasks = this.tasks.filter(task => task.id !== id)
-    console.log("recieving id from child", id)
+  recieveCompleteFromChild(id: string) {
+    this.tasks = this.tasks.filter((task) => task.id !== id);
+    console.log('recieving id from child', id);
   }
 
+  addTask() {
+    this.isAddingNewtask = true;
+  }
+
+  onClose() {
+    this.isAddingNewtask = false;
+  }
+
+  onAdd(task: NewTaskData) {
+    this.tasks.unshift({
+      id: new Date().getTime().toString(),
+      userId: this.userId,
+      title: task.title,
+      summary: task.summary,
+      dueDate: task.date,
+    });
+    this.isAddingNewtask=false
+  }
 }
